@@ -1,0 +1,58 @@
+version: '3.9'
+volumes:
+  pgdata:
+networks:
+  andrey_network:
+  dbeaver_net:
+services:
+
+  db:
+    image: postgres:14.3-alpine3.15
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DB}
+    networks:
+      dbeaver_net:
+      andrey_network:
+    restart: unless-stopped
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+      - ./logs:/var/log
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U andrey -d app" ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+  app:
+    tty: true
+    build: .
+    command: gunicorn --bind 0.0.0.0:8080 app:get_app --worker-class aiohttp.GunicornWebWorker --capture-output
+    environment:
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_HOST: ${PG_HOST}
+      PG_PORT: ${PG_PORT}
+      PG_DB: ${PG_DB}
+      WAIT_HOSTS: ${PG_HOST}:${PG_PORT}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      andrey_network:
+      dbeaver_net:
+    volumes:
+      - ./app:/app
+  dbeaver_service:
+    image: dbeaver/cloudbeaver:latest
+    ports:
+      - "7777:8978"
+    networks:
+      dbeaver_net:
+    restart: unless-stopped
+
