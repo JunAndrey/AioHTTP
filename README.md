@@ -1,7 +1,8 @@
 ### _ДЗ: https://github.com/netology-code/py-homeworks-web/tree/new/2.3-aiohttp_<br/>
 ## Для запуска контейнера требуется ввести команду:
 `docker-compose --env-file .env.example up` <br/>
-в файле `.env.example` можно заменить параметры БД на свои, но после этого выполнить команду `docker-compose --env-file .env.example build` и через эти параметры регистрироваться на хосте DBeaver.<br/>
+в файле `.env.example` можно заменить параметры БД на свои, но после этого выполнить команду
+`docker-compose --env-file .env.example build` и через эти параметры регистрироваться на хосте DBeaver.<br/>
 Передавать запросы к апи можно запустить файл `client.py` (есть примеры запросов).<br/>
 ## Описание <br/>
 Описание БД - по сравнению с Flask используется AsyncSession, и другая строка подключения (через асинхронный провайдер).<br/>
