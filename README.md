@@ -1,4 +1,4 @@
-##ДЗ: https://github.com/netology-code/py-homeworks-web/tree/new/2.3-aiohttp<br/>
+## _ДЗ: https://github.com/netology-code/py-homeworks-web/tree/new/2.3-aiohttp_<br/>
 Для запуска требуется:
 1. docker-compose up
 запуск контейнеров
